@@ -1,18 +1,40 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <base-pokemon-card :pokemon="pokemon" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import { reactive, onMounted } from 'vue';
+import BasePokemonCard from '@/components/BasePokemonCard';
+const pokemonDummy = require('@/dummy/index.json');
 
 export default {
-  name: "Home",
+  name: 'Home',
+
   components: {
-    HelloWorld
+    BasePokemonCard
+  },
+
+  setup() {
+    const pokemon = reactive(pokemonDummy);
+
+    onMounted(() => {
+      console.log('Pokemon', pokemon);
+    });
+
+    return {
+      pokemon
+    };
   }
 };
 </script>
+
+<style>
+.home {
+  padding: 50px 20px 25px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+</style>
