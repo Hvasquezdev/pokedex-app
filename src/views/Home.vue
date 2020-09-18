@@ -1,25 +1,31 @@
 <template>
   <div class="home">
-    <base-pokemon-card :pokemon="pokemon" />
+    <pokemon-row
+      v-for="poke in 5"
+      :key="poke"
+      :is-grey="poke % 2 === 0 ? true : false"
+      :pokemon="pokemon"
+    />
   </div>
 </template>
 
 <script>
 import { reactive, onMounted } from 'vue';
-import BasePokemonCard from '@/components/BasePokemonCard';
+import PokemonRow from '@/components/PokemonRow';
 const pokemonDummy = require('@/dummy/index.json');
 
 export default {
   name: 'Home',
 
   components: {
-    BasePokemonCard
+    PokemonRow
   },
 
   setup() {
     const pokemon = reactive(pokemonDummy);
 
     onMounted(() => {
+      // eslint-disable-next-line
       console.log('Pokemon', pokemon);
     });
 
@@ -32,7 +38,6 @@ export default {
 
 <style>
 .home {
-  padding: 50px 20px 25px 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

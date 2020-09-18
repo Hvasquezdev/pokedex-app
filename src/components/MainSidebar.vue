@@ -1,5 +1,5 @@
 <template>
-  <sidebar class="main-sidebar">
+  <sidebar :class="{ 'is-open': isOpen }" class="main-sidebar">
     <button class="sidebar-button">
       Bug
     </button>
@@ -9,7 +9,7 @@
     <button class="sidebar-button">
       Bug
     </button>
-    <button class="sidebar-button">
+    <button v-for="type in 50" :key="type" class="sidebar-button">
       Bug
     </button>
   </sidebar>
@@ -17,7 +17,11 @@
 
 <script>
 export default {
-  name: 'MainSidebar'
+  name: 'MainSidebar',
+
+  props: {
+    isOpen: Boolean
+  }
 };
 </script>
 
@@ -30,7 +34,16 @@ export default {
   justify-content: flex-start;
   padding: 10px;
   background-color: #fff;
-  box-shadow: 4px 0px 4px rgba(243, 243, 243, 0.8);
+  box-shadow: 6px 0px 25px rgba(242, 242, 242, 0.6);
+  width: 125px;
+  position: fixed;
+  overflow-y: scroll;
+  z-index: 99;
+  transform: translateX(-100%);
+  transition: transform 0.25s;
+}
+.main-sidebar.is-open {
+  transform: translateX(0%);
 }
 .main-sidebar .sidebar-button {
   box-shadow: none;
@@ -47,5 +60,12 @@ export default {
 }
 .main-sidebar .sidebar-button:not(:last-child) {
   margin-bottom: 10px;
+}
+@media (min-width: 1024px) {
+  .main-sidebar,
+  .main-sidebar.is-open {
+    left: 0;
+    transform: translateX(0%);
+  }
 }
 </style>

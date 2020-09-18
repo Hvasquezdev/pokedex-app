@@ -68,7 +68,7 @@ export default {
   height: 250px;
   border-radius: 14px;
   background: #fff;
-  filter: drop-shadow(0px 0px 13px rgba(243, 243, 243, 0.8));
+  filter: drop-shadow(0px 0px 13px rgba(242, 242, 242, 0.8));
   padding: 15px;
   display: flex;
   flex-direction: column;
@@ -80,24 +80,24 @@ export default {
 .pokemon-card .card-right-circle {
   font-family: 'Nunito', sans-serif;
   font-weight: bold;
-  color: #363636;
+  color: #5f5f5d;
   background: #fff;
-  width: 100px;
-  height: 100px;
+  width: 75px;
+  height: 75px;
   position: absolute;
   border-radius: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #f3f3f3;
-  top: -28%;
+  border: 1px solid #f2f2f2;
+  top: -20%;
 }
 .pokemon-card .card-left-circle {
-  left: -28%;
+  left: -17%;
   transform: translate(50%, 50%);
 }
 .pokemon-card .card-right-circle {
-  right: -28%;
+  right: -17%;
   transform: translate(-50%, 50%);
 }
 .pokemon-card .card-header {
@@ -106,10 +106,10 @@ export default {
   text-align: center;
 }
 .pokemon-card .pokemon-num {
-  font-size: 125px;
+  font-size: 110px;
   line-height: 100px;
   font-weight: bold;
-  color: #f3f3f3;
+  color: #e9e8e6;
   font-family: sans-serif;
   position: absolute;
   z-index: 5;
@@ -132,7 +132,7 @@ export default {
   font-weight: bold;
   text-transform: capitalize;
   font-size: 18px;
-  color: #363636;
+  color: #5f5f5d;
   text-align: center;
 }
 .pokemon-card .card-body .pokemon-types {
@@ -147,5 +147,10 @@ export default {
   padding: 3px 8px;
   border-radius: 4px;
   margin: 5px;
+}
+@media (min-width: 1024px) {
+  .pokemon-card .pokemon-num {
+    font-size: 125px;
+  }
 }
 </style>
