@@ -1,19 +1,21 @@
 <template>
-  <sidebar :class="{ 'is-open': isOpen }" class="main-sidebar">
+  <aside :class="{ 'is-open': isOpen }" class="main-sidebar">
     <template v-if="response?.results">
       <main-sidebar-item
         v-for="(type, key) in response.results"
         :key="key"
         :type="type"
+        :selected="selected"
         @click="onClick(type)"
       />
     </template>
-  </sidebar>
+  </aside>
 </template>
 
 <script>
 import { onMounted, computed } from 'vue';
 import { useFetch } from '@/hooks/useFetch';
+import store from '@/store';
 import MainSidebarItem from '@/components/MainSidebarItem';
 
 export default {
@@ -33,12 +35,17 @@ export default {
     const loading = computed(() => data.loading);
     const error = computed(() => data.error);
     const response = computed(() => data.response);
+    const selected = computed(() => store.state.selectedType.name || '');
 
     onMounted(() => {
       setData();
     });
 
     const onClick = type => {
+      if (type.name === selected.value) {
+        return;
+      }
+
       emit('load-pokemon-list', type);
     };
 
@@ -46,7 +53,8 @@ export default {
       loading,
       error,
       response,
-      onClick
+      onClick,
+      selected
     };
   }
 };

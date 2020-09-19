@@ -13,9 +13,11 @@
         {{ pokemon.name }}
       </h2>
       <ul class="pokemon-types">
-        <li v-for="(type, key) in pokemon.types" :key="key">
-          {{ type.type.name }}
-        </li>
+        <pokemon-type-tag
+          v-for="(type, key) in pokemon.types"
+          :key="key"
+          :type="type.type"
+        />
       </ul>
       <h3>
         {{ ability }}
@@ -26,9 +28,14 @@
 
 <script>
 import { computed } from 'vue';
+import PokemonTypeTag from '@/components/PokemonTypeTag';
 
 export default {
   name: 'BasePokemonCard',
+
+  components: {
+    PokemonTypeTag
+  },
 
   props: {
     pokemon: {
@@ -139,12 +146,6 @@ export default {
   font-size: 16px;
   font-weight: 300;
   margin-top: 5px;
-}
-.pokemon-card .card-body .pokemon-types li {
-  background: #f0d279;
-  padding: 3px 8px;
-  border-radius: 4px;
-  margin: 5px;
 }
 @media (min-width: 1024px) {
   .pokemon-card .pokemon-num {

@@ -1,16 +1,22 @@
 <template>
-  <div :class="{ 'is-grey': isGrey }" class="pokemon-row">
+  <div ref="pokemonRow" :class="{ 'is-grey': isGrey }" class="pokemon-row">
     <pokemon-card :pokemon="pokemon" />
 
     <ul class="pokemon-stats-list">
       <li v-for="(stat, key) in pokemon.stats" :key="key">
-        <pokemon-progress-bar :progress="stat" />
+        <pokemon-progress-bar
+          :animation-end="animationEnd"
+          :delay="key"
+          :progress="stat"
+        />
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import { onMounted, ref } from 'vue';
+import { gsap } from 'gsap';
 import PokemonCard from '@/components/PokemonCard';
 import PokemonProgressBar from '@/components/PokemonProgressBar';
 
@@ -27,7 +33,35 @@ export default {
       type: Object,
       default: null
     },
+    delay: {
+      type: Number,
+      default: 0
+    },
     isGrey: Boolean
+  },
+
+  setup(props) {
+    const pokemonRow = ref(null);
+    const animationEnd = ref(false);
+
+    onMounted(() => {
+      gsap.set(pokemonRow.value, {
+        x: '-100%'
+      });
+
+      gsap.to(pokemonRow.value, {
+        x: '0%',
+        duration: 0.5,
+        delay: 0.15 + props.delay / 10,
+        ease: 'sine.out',
+        onComplete: () => (animationEnd.value = true)
+      });
+    });
+
+    return {
+      pokemonRow,
+      animationEnd
+    };
   }
 };
 </script>

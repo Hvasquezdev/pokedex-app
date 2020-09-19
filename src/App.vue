@@ -36,16 +36,25 @@ export default {
 
     const onLoadPokemonList = type => {
       const [data, setData] = getByType(type.url);
-      store.commit('SET_POKEMON_LIST', []);
+      setPokemonType(type);
+      setPokemonList({ loading: true, value: [] });
 
       watch(
         () => data.response,
         newVal => {
-          store.commit('SET_POKEMON_LIST', newVal);
+          setPokemonList({ loading: false, value: newVal });
         }
       );
 
       setData();
+    };
+
+    const setPokemonList = payload => {
+      store.commit('SET_POKEMON_LIST', payload);
+    };
+
+    const setPokemonType = type => {
+      store.commit('SET_POKEMON_TYPE', type);
     };
 
     return {
@@ -83,6 +92,7 @@ export default {
 
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: 100px 1fr;
   width: 100%;
   min-height: 100vh;
   overflow: hidden;

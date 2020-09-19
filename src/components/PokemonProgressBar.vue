@@ -7,17 +7,14 @@
       {{ progress.base_stat }}
     </h3>
     <div class="pokemon-progress-bar">
-      <span
-        :class="className"
-        class="progress-bar"
-        :style="{ width: `${totalProgress}%` }"
-      />
+      <span ref="progressBar" :class="className" class="progress-bar" />
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
+import { gsap } from 'gsap';
 
 export default {
   name: 'PokemonProgressBar',
@@ -26,11 +23,17 @@ export default {
     progress: {
       type: Object,
       default: null
-    }
+    },
+    delay: {
+      type: Number,
+      default: 0
+    },
+    animationEnd: Boolean
   },
 
   setup(props) {
-    let progress = ref(0);
+    const progressBar = ref(null);
+    let progress = ref(props.progress.base_stat);
 
     const totalProgress = computed(() => {
       const max = 252;
@@ -58,16 +61,21 @@ export default {
       return 'is-onehundred';
     });
 
-    onMounted(() => {
-      const timeOut = setTimeout(() => {
-        progress.value = props.progress.base_stat;
-        clearTimeout(timeOut);
-      }, 250);
-    });
+    watch(
+      () => props.animationEnd,
+      () => {
+        gsap.to(progressBar.value, {
+          width: totalProgress.value + '%',
+          duration: 0.3,
+          delay: -0.3 + props.delay / 10,
+          ease: 'linear'
+        });
+      }
+    );
 
     return {
-      totalProgress,
-      className
+      className,
+      progressBar
     };
   }
 };
@@ -105,7 +113,7 @@ export default {
   box-shadow: 0px 0px 3px rgba(243, 243, 243, 0.8);
 }
 .pokemon-progress-bar .progress-bar {
-  width: 10%;
+  width: 0%;
   height: 100%;
   border-radius: 4px;
   -webkit-transition: 0.25s linear;

@@ -1,5 +1,5 @@
 <template>
-  <button class="main-sidebar-item" :style="bgColor">
+  <button class="main-sidebar-item" :style="styles">
     {{ type.name }}
   </button>
 </template>
@@ -14,18 +14,27 @@ export default {
     type: {
       type: Object,
       default: null
+    },
+    selected: {
+      type: String,
+      default: ''
     }
   },
 
   setup(props) {
-    const bgColor = computed(() => {
+    const isSelected = computed(() => props.selected === props.type.name);
+    const styles = computed(() => {
       return {
-        backgroundColor: `var(--${props.type.name.toLowerCase()})`
+        backgroundColor: `var(--${props.type.name.toLowerCase()})`,
+        boxShadow:
+          isSelected.value === true
+            ? `0px 0px 4px var(--${props.type.name.toLowerCase()})`
+            : 'none'
       };
     });
 
     return {
-      bgColor
+      styles
     };
   }
 };
@@ -46,5 +55,6 @@ export default {
   border-radius: 4px;
   text-transform: capitalize;
   font-family: 'Nunito', sans-serif;
+  transition: box-shadow 0.3s;
 }
 </style>
