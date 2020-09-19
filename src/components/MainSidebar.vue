@@ -1,26 +1,53 @@
 <template>
   <sidebar :class="{ 'is-open': isOpen }" class="main-sidebar">
-    <button class="sidebar-button">
-      Bug
-    </button>
-    <button class="sidebar-button">
-      Bug
-    </button>
-    <button class="sidebar-button">
-      Bug
-    </button>
-    <button v-for="type in 50" :key="type" class="sidebar-button">
-      Bug
-    </button>
+    <template v-if="response?.results">
+      <main-sidebar-item
+        v-for="(type, key) in response.results"
+        :key="key"
+        :type="type"
+        @click="onClick(type)"
+      />
+    </template>
   </sidebar>
 </template>
 
 <script>
+import { onMounted, computed } from 'vue';
+import { useFetch } from '@/hooks/useFetch';
+import MainSidebarItem from '@/components/MainSidebarItem';
+
 export default {
   name: 'MainSidebar',
 
+  components: {
+    MainSidebarItem
+  },
+
   props: {
     isOpen: Boolean
+  },
+
+  setup(props, { emit }) {
+    const [data, setData] = useFetch('https://pokeapi.co/api/v2/type');
+
+    const loading = computed(() => data.loading);
+    const error = computed(() => data.error);
+    const response = computed(() => data.response);
+
+    onMounted(() => {
+      setData();
+    });
+
+    const onClick = type => {
+      emit('load-pokemon-list', type);
+    };
+
+    return {
+      loading,
+      error,
+      response,
+      onClick
+    };
   }
 };
 </script>
@@ -32,7 +59,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 10px;
+  padding: 20px 10px;
   background-color: #fff;
   box-shadow: 6px 0px 25px rgba(242, 242, 242, 0.6);
   width: 125px;
@@ -45,20 +72,7 @@ export default {
 .main-sidebar.is-open {
   transform: translateX(0%);
 }
-.main-sidebar .sidebar-button {
-  box-shadow: none;
-  border: none;
-  background-color: #f3f3f3;
-  color: #363636;
-  font-weight: bold;
-  font-size: 18px;
-  width: 100%;
-  padding: 10px;
-  cursor: pointer;
-  outline: none;
-  border-radius: 4px;
-}
-.main-sidebar .sidebar-button:not(:last-child) {
+.main-sidebar .main-sidebar-item:not(:last-child) {
   margin-bottom: 10px;
 }
 @media (min-width: 1024px) {
@@ -66,6 +80,7 @@ export default {
   .main-sidebar.is-open {
     left: 0;
     transform: translateX(0%);
+    width: 150px;
   }
 }
 </style>

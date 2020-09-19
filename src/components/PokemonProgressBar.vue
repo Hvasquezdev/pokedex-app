@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 export default {
   name: 'PokemonProgressBar',
@@ -30,7 +30,7 @@ export default {
   },
 
   setup(props) {
-    const progress = ref(props.progress.base_stat);
+    let progress = ref(0);
 
     const totalProgress = computed(() => {
       const max = 252;
@@ -56,6 +56,13 @@ export default {
       }
 
       return 'is-onehundred';
+    });
+
+    onMounted(() => {
+      const timeOut = setTimeout(() => {
+        progress.value = props.progress.base_stat;
+        clearTimeout(timeOut);
+      }, 250);
     });
 
     return {
@@ -101,10 +108,10 @@ export default {
   width: 10%;
   height: 100%;
   border-radius: 4px;
-  -webkit-transition: 0.4s linear;
-  -moz-transition: 0.4s linear;
-  -o-transition: 0.4s linear;
-  transition: 0.4s linear;
+  -webkit-transition: 0.25s linear;
+  -moz-transition: 0.25s linear;
+  -o-transition: 0.25s linear;
+  transition: 0.25s linear;
   -webkit-transition-property: width, background;
   -moz-transition-property: width, background;
   -o-transition-property: width, background;

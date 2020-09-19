@@ -1,12 +1,10 @@
 <template>
   <div class="pokemon-card">
-    <span class="card-left-circle"> {{ pokemon.height }}m </span>
-    <span class="card-right-circle"> {{ pokemon.weight }}kg </span>
+    <span class="card-left-circle"> {{ pokemon.height / 10 }}m </span>
+    <span class="card-right-circle"> {{ pokemon.weight / 10 }}kg </span>
 
     <header class="card-header">
-      <span class="pokemon-num">
-        #150
-      </span>
+      <span class="pokemon-num"> #{{ pokemon.id }} </span>
       <img class="card-image" :src="pokemonThumb" :alt="pokemon.name" />
     </header>
 
@@ -42,11 +40,11 @@ export default {
   setup(props) {
     const ability = computed(() => {
       const pokemon = props.pokemon;
-      const parsedAbility = pokemon.abilities[0].ability.name
+      const parsedAbility = pokemon.abilities[0]?.ability?.name
         .split('-')
         .join(' ');
 
-      return parsedAbility;
+      return parsedAbility || '';
     });
     const pokemonThumb = computed(() => {
       const pokemon = props.pokemon;

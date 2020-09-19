@@ -29,6 +29,7 @@ export default {
 
 <style>
 .main-app-bar {
+  height: 100px;
   position: relative;
   display: flex;
   align-items: center;
