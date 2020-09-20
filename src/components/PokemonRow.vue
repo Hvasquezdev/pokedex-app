@@ -3,12 +3,17 @@
     <pokemon-card :pokemon="pokemon" />
 
     <ul class="pokemon-stats-list">
-      <li v-for="(stat, key) in pokemon.stats" :key="key">
-        <pokemon-progress-bar
-          :animation-end="animationEnd"
-          :delay="key"
-          :progress="stat"
-        />
+      <template v-if="pokemon.stats.length">
+        <li v-for="(stat, key) in pokemon.stats" :key="key">
+          <pokemon-progress-bar
+            :animation-end="animationEnd"
+            :delay="key"
+            :progress="stat"
+          />
+        </li>
+      </template>
+      <li class="unknown-stats" v-else>
+        Unknown stats
       </li>
     </ul>
   </div>
@@ -88,6 +93,12 @@ export default {
 }
 .pokemon-row .pokemon-stats-list > *:not(:last-child) {
   margin-bottom: 10px;
+}
+.pokemon-row .pokemon-stats-list .unknown-stats {
+  font-weight: bold;
+  color: #8a8984;
+  font-size: 18px;
+  text-align: center;
 }
 .pokemon-row.is-grey {
   background-color: #f7f7f7;

@@ -4,7 +4,9 @@
     <span class="card-right-circle"> {{ pokemon.weight / 10 }}kg </span>
 
     <header class="card-header">
-      <span class="pokemon-num"> #{{ pokemon.id }} </span>
+      <span :class="{ 'big-num': pokemon.id > 999 }" class="pokemon-num">
+        #{{ pokemon.id }}
+      </span>
       <img class="card-image" :src="pokemonThumb" :alt="pokemon.name" />
     </header>
 
@@ -19,8 +21,8 @@
           :type="type.type"
         />
       </ul>
-      <h3>
-        {{ ability }}
+      <h3 class="ability-name" v-if="ability">
+        <strong>Ability:</strong> {{ ability }}
       </h3>
     </div>
   </div>
@@ -55,8 +57,27 @@ export default {
     });
     const pokemonThumb = computed(() => {
       const pokemon = props.pokemon;
-      return pokemon.sprites.other['official-artwork'].front_default;
+      const altImage = pokemon.sprites.front_default;
+      const imgUrl = pokemon.sprites.other['official-artwork'].front_default;
+
+      if (!altImage && !imgUrl) {
+        return findIconSprite();
+      }
+
+      return imgUrl || altImage;
     });
+
+    const findIconSprite = () => {
+      const sprites = props.pokemon.sprites.versions;
+
+      for (const key in sprites) {
+        const current = sprites[key];
+
+        if ('icons' in current && current.icons.front_default) {
+          return current.icons.front_default;
+        }
+      }
+    };
 
     return {
       ability,
@@ -122,6 +143,11 @@ export default {
   left: 50%;
   transform: translateX(-50%);
 }
+.pokemon-card .pokemon-num.big-num {
+  font-size: 85px !important;
+  top: 0 !important;
+  line-height: 80px !important;
+}
 .pokemon-card .card-image {
   width: 100px;
   margin-top: 20px;
@@ -146,6 +172,12 @@ export default {
   font-size: 16px;
   font-weight: 300;
   margin-top: 5px;
+}
+.pokemon-card .card-body .ability-name {
+  text-transform: capitalize;
+  font-size: 16px;
+  color: #5f5f5d;
+  text-align: center;
 }
 @media (min-width: 1024px) {
   .pokemon-card .pokemon-num {
