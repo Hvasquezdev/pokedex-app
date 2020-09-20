@@ -42,23 +42,23 @@ export default {
       return (progress.value / max) * percent;
     });
     const className = computed(() => {
-      if (totalProgress.value < 25) {
+      if (totalProgress.value < 15) {
         return 'is-five';
       }
 
-      if (totalProgress.value >= 25 && totalProgress.value < 50) {
-        return 'is-twentyfive';
+      if (totalProgress.value >= 15 && totalProgress.value < 30) {
+        return 'is-fifteen';
       }
 
-      if (totalProgress.value >= 50 && totalProgress.value < 75) {
-        return 'is-fifty';
+      if (totalProgress.value >= 30 && totalProgress.value < 40) {
+        return 'is-thirty';
       }
 
-      if (totalProgress.value >= 75 && totalProgress.value < 100) {
-        return 'is-seventyfive';
+      if (totalProgress.value >= 40 && totalProgress.value < 70) {
+        return 'is-forty';
       }
 
-      return 'is-onehundred';
+      return 'is-seventy-up';
     });
 
     watch(
@@ -144,7 +144,7 @@ export default {
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e5605a",endColorstr="#e2363e",GradientType=1);
 }
-.pokemon-progress-bar .progress-bar.is-twentyfive {
+.pokemon-progress-bar .progress-bar.is-fifteen {
   background: rgb(248, 173, 70);
   background: -moz-linear-gradient(
     90deg,
@@ -163,7 +163,7 @@ export default {
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f8ad46",endColorstr="#fc9d1b",GradientType=1);
 }
-.pokemon-progress-bar .progress-bar.is-fifty {
+.pokemon-progress-bar .progress-bar.is-thirty {
   background: rgb(253, 211, 74);
   background: -moz-linear-gradient(
     90deg,
@@ -182,7 +182,7 @@ export default {
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fdd34a",endColorstr="#f5c206",GradientType=1);
 }
-.pokemon-progress-bar .progress-bar.is-seventyfive {
+.pokemon-progress-bar .progress-bar.is-forty {
   background: rgb(249, 240, 71);
   background: -moz-linear-gradient(
     90deg,
@@ -201,7 +201,7 @@ export default {
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f9f047",endColorstr="#0fd850",GradientType=1);
 }
-.pokemon-progress-bar .progress-bar.is-onehundred {
+.pokemon-progress-bar .progress-bar.is-seventy-up {
   background: rgb(15, 216, 80);
   background: -moz-linear-gradient(
     90deg,
