@@ -23,13 +23,19 @@
     </template>
 
     <div v-show="pokemonList.length" class="pokemon-list-wrapper">
-      <pokemon-row
-        v-for="(pokemon, key) in pokemonList"
-        :key="key"
-        :delay="key"
-        :is-grey="key % 2 === 0 ? true : false"
-        :pokemon="pokemon"
-      />
+      <div
+        v-for="(rowWrapper, wrapperKey) in pokemonList"
+        :key="wrapperKey"
+        class="pokemon-rows-wrapper"
+      >
+        <pokemon-row
+          v-for="(pokemon, key) in rowWrapper"
+          :key="key"
+          :delay="key"
+          :is-grey="key % 2 === 0 ? true : false"
+          :pokemon="pokemon"
+        />
+      </div>
 
       <base-button
         v-if="hasMoreToLoad"
@@ -102,7 +108,7 @@ export default {
       watch(
         () => list.response,
         newVal => {
-          const updatedList = [...pokemonList.value, ...newVal];
+          const updatedList = [...pokemonList.value, ...[newVal]];
           const htmlWrapper = document.querySelector('html');
           const currentOffset = htmlWrapper.scrollTop;
 

@@ -1,5 +1,5 @@
 <template>
-  <div ref="pokemonRow" :class="{ 'is-grey': isGrey }" class="pokemon-row">
+  <section ref="pokemonRow" :class="{ 'is-grey': isGrey }" class="pokemon-row">
     <pokemon-card :pokemon="pokemon" />
 
     <ul class="pokemon-stats-list">
@@ -16,7 +16,7 @@
         Unknown stats
       </li>
     </ul>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -57,7 +57,7 @@ export default {
       gsap.to(pokemonRow.value, {
         x: '0%',
         duration: 0.5,
-        delay: 0 + props.delay / 15,
+        delay: 0.1 + props.delay / 15,
         ease: 'sine.out',
         onComplete: () => (animationEnd.value = true)
       });

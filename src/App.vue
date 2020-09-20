@@ -75,7 +75,10 @@ export default {
             ...pokemonPagination.value,
             totalLoaded: newVal.length
           });
-          setPokemonList({ loading: false, value: newVal });
+          setPokemonList({
+            loading: false,
+            value: newVal.length ? [newVal] : []
+          });
         }
       );
 
