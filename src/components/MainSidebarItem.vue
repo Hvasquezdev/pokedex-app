@@ -1,14 +1,19 @@
 <template>
-  <button class="main-sidebar-item" :style="styles">
+  <base-button class="main-sidebar-item" :style="styles" block>
     {{ type.name }}
-  </button>
+  </base-button>
 </template>
 
 <script>
 import { computed } from 'vue';
+import BaseButton from '@/components/BaseButton';
 
 export default {
   name: 'MainSidebarItem',
+
+  components: {
+    BaseButton
+  },
 
   props: {
     type: {
@@ -39,22 +44,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.main-sidebar-item {
-  box-shadow: none;
-  border: none;
-  background-color: #f3f3f3;
-  color: #fff;
-  font-weight: bold;
-  font-size: 18px;
-  width: 100%;
-  padding: 10px;
-  cursor: pointer;
-  outline: none;
-  border-radius: 4px;
-  text-transform: capitalize;
-  font-family: 'Nunito', sans-serif;
-  transition: box-shadow 0.3s;
-}
-</style>

@@ -12,8 +12,8 @@
 <script>
 import MainSidebar from '@/components/MainSidebar';
 import MainAppBar from '@/components/MainAppBar';
-import { reactive, watch } from 'vue';
-import { getByType } from '@/hooks/usePokemon';
+import { reactive, watch, computed } from 'vue';
+import { getByType, getListByUrl } from '@/hooks/usePokemon';
 import store from '@/store';
 
 export default {
@@ -30,6 +30,8 @@ export default {
       pokemon: []
     });
 
+    const pokemonPagination = computed(() => store.state.pokemonPagination);
+
     const onToggleMenu = val => {
       state.isSidebarOpen = val;
     };
@@ -42,11 +44,42 @@ export default {
       watch(
         () => data.response,
         newVal => {
-          setPokemonList({ loading: false, value: newVal });
+          const urlList = newVal.pokemon.map(item => item.pokemon.url);
+
+          setTypePokemonList(urlList);
+          setPokemonPagination({
+            ...pokemonPagination.value,
+            total: newVal.pokemon.length,
+            totalLoaded: 0
+          });
+
+          const paginatedUrlList = urlList.slice(
+            0,
+            pokemonPagination.value.perPage
+          );
+
+          loadPokemonListData(paginatedUrlList);
         }
       );
 
       setData();
+    };
+
+    const loadPokemonListData = urlList => {
+      const [list, setList] = getListByUrl(urlList);
+
+      watch(
+        () => list.response,
+        newVal => {
+          setPokemonPagination({
+            ...pokemonPagination.value,
+            totalLoaded: newVal.length
+          });
+          setPokemonList({ loading: false, value: newVal });
+        }
+      );
+
+      setList();
     };
 
     const setPokemonList = payload => {
@@ -55,6 +88,14 @@ export default {
 
     const setPokemonType = type => {
       store.commit('SET_POKEMON_TYPE', type);
+    };
+
+    const setTypePokemonList = list => {
+      store.commit('SET_POKEMON_TYPE_POKEMON_LIST', list);
+    };
+
+    const setPokemonPagination = pagination => {
+      store.commit('SET_POKEMON_PAGINATION', pagination);
     };
 
     return {

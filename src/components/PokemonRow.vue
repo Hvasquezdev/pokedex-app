@@ -52,7 +52,7 @@ export default {
       gsap.to(pokemonRow.value, {
         x: '0%',
         duration: 0.5,
-        delay: 0.15 + props.delay / 10,
+        delay: 0 + props.delay / 15,
         ease: 'sine.out',
         onComplete: () => (animationEnd.value = true)
       });
