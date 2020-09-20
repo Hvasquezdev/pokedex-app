@@ -7,7 +7,11 @@
       <span :class="{ 'big-num': pokemon.id > 999 }" class="pokemon-num">
         #{{ pokemon.id }}
       </span>
-      <img class="card-image" :src="pokemonThumb" :alt="pokemon.name" />
+      <img
+        class="card-image"
+        :src="pokemonThumb || formSpriteUrl"
+        :alt="pokemon.name"
+      />
     </header>
 
     <div class="card-body">
@@ -29,7 +33,8 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, watch, ref } from 'vue';
+import { useFetch } from '@/hooks/useFetch';
 import PokemonTypeTag from '@/components/PokemonTypeTag';
 
 export default {
@@ -47,6 +52,8 @@ export default {
   },
 
   setup(props) {
+    const formSpriteUrl = ref(null);
+
     const ability = computed(() => {
       const pokemon = props.pokemon;
       const parsedAbility = pokemon.abilities[0]?.ability?.name
@@ -61,7 +68,13 @@ export default {
       const imgUrl = pokemon.sprites.other['official-artwork'].front_default;
 
       if (!altImage && !imgUrl) {
-        return findIconSprite();
+        const iconSprite = findIconSprite();
+
+        if (!iconSprite && pokemon.forms.length) {
+          setFormSprite();
+        }
+
+        return iconSprite;
       }
 
       return imgUrl || altImage;
@@ -79,9 +92,25 @@ export default {
       }
     };
 
+    const setFormSprite = () => {
+      const [form, setForm] = useFetch(props.pokemon.forms[0].url);
+
+      watch(
+        () => form.response,
+        response => {
+          const { sprites } = response;
+
+          formSpriteUrl.value = sprites.front_default;
+        }
+      );
+
+      setForm();
+    };
+
     return {
       ability,
-      pokemonThumb
+      pokemonThumb,
+      formSpriteUrl
     };
   }
 };
