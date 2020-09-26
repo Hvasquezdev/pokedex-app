@@ -41,6 +41,7 @@ export default {
 
       return (progress.value / max) * percent;
     });
+
     const className = computed(() => {
       if (totalProgress.value < 15) {
         return 'is-five';

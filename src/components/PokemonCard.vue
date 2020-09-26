@@ -7,10 +7,9 @@
       <span :class="{ 'big-num': pokemon.id > 999 }" class="pokemon-num">
         #{{ pokemon.id }}
       </span>
-      <img
-        class="card-image"
-        :src="pokemonThumb || formSpriteUrl"
-        :alt="pokemon.name"
+      <pokemon-card-image
+        :img-url="pokemonThumb || formSpriteUrl"
+        :img-alt="pokemon.name"
       />
     </header>
 
@@ -36,12 +35,14 @@
 import { computed, watch, ref } from 'vue';
 import { useFetch } from '@/hooks/useFetch';
 import PokemonTypeTag from '@/components/PokemonTypeTag';
+import PokemonCardImage from '@/components/PokemonCardImage';
 
 export default {
   name: 'BasePokemonCard',
 
   components: {
-    PokemonTypeTag
+    PokemonTypeTag,
+    PokemonCardImage
   },
 
   props: {
@@ -176,13 +177,6 @@ export default {
   font-size: 85px !important;
   top: 0 !important;
   line-height: 80px !important;
-}
-.pokemon-card .card-image {
-  width: 100px;
-  margin-top: 20px;
-  position: relative;
-  z-index: 10;
-  object-fit: contain;
 }
 .pokemon-card .card-body {
   font-family: 'Nunito', sans-serif;
